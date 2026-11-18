@@ -31,6 +31,9 @@
     <!-- The &nbsp;&nbsp; keeps the shim a bit wider than the input so the ellipsis does not kick in too early. -->
     <span aria-hidden="true"
     class="editable-toolbar-title--input editable-toolbar-title--input-shim toolbar--editable-toolbar">{{ selectedTitle || text.input_placeholder }}{{ selectedTitle ? '&nbsp;&nbsp;' : ''}}</span>
+    @if (isInputFocused) {
+      <span class="editable-toolbar-title--hint">{{ text.press_enter_to_save }}</span>
+    }
   </div>
 }
 @if (!editable) {
