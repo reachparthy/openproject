@@ -77,6 +77,8 @@ export class EditableToolbarTitleComponent implements OnInit, OnChanges {
 
   public selectedTitle?:string;
 
+  public isInputFocused = false;
+
   public selectableTitleIdentifier = selectableTitleIdentifier;
 
   protected readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -125,11 +127,13 @@ export class EditableToolbarTitleComponent implements OnInit, OnChanges {
   }
 
   public onFocus(event:FocusEvent):void {
+    this.isInputFocused = true;
     this.toggleToolbarButtonVisibility(true);
     this.selectInputOnInitalFocus(event.target as HTMLInputElement);
   }
 
   public onBlur():void {
+    this.isInputFocused = false;
     this.toggleToolbarButtonVisibility(false);
   }
 

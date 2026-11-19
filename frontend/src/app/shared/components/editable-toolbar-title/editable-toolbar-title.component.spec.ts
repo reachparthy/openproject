@@ -158,4 +158,72 @@ describe('EditableToolbarTitleComponent loading title', () => {
 
     expect(save).toHaveBeenCalledWith('Changed');
   });
+
+  it('tracks input focus state when user focuses and blurs the input field', () => {
+    const fixture = TestBed.createComponent(EditableToolbarTitleComponent);
+    fixture.componentRef.setInput('title', 'Original');
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    expect(component.isInputFocused).toBe(false);
+
+    fireEvent.focus(input);
+    fixture.detectChanges();
+
+    expect(component.isInputFocused).toBe(true);
+
+    fireEvent.blur(input);
+    fixture.detectChanges();
+
+    expect(component.isInputFocused).toBe(false);
+  });
+
+  it('shows hint text when input is focused', () => {
+    const fixture = TestBed.createComponent(EditableToolbarTitleComponent);
+    fixture.componentRef.setInput('title', 'Original');
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    let hint = fixture.nativeElement.querySelector('.editable-toolbar-title--hint');
+    expect(hint).toBeNull();
+
+    fireEvent.focus(input);
+    fixture.detectChanges();
+
+    hint = fixture.nativeElement.querySelector('.editable-toolbar-title--hint');
+    expect(hint).not.toBeNull();
+  });
+
+  it('hides hint text when input is not focused', () => {
+    const fixture = TestBed.createComponent(EditableToolbarTitleComponent);
+    fixture.componentRef.setInput('title', 'Original');
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    fireEvent.focus(input);
+    fixture.detectChanges();
+
+    let hint = fixture.nativeElement.querySelector('.editable-toolbar-title--hint');
+    expect(hint).not.toBeNull();
+
+    fireEvent.blur(input);
+    fixture.detectChanges();
+
+    hint = fixture.nativeElement.querySelector('.editable-toolbar-title--hint');
+    expect(hint).toBeNull();
+  });
+
+  it('displays correct translation key in hint text', () => {
+    const fixture = TestBed.createComponent(EditableToolbarTitleComponent);
+    fixture.componentRef.setInput('title', 'Original');
+    fixture.detectChanges();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+
+    fireEvent.focus(input);
+    fixture.detectChanges();
+
+    const hint = fixture.nativeElement.querySelector('.editable-toolbar-title--hint');
+    expect(hint).toHaveTextContent('js.label_press_enter_to_save');
+  });
 });
